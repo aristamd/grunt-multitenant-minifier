@@ -1,2 +1,2 @@
-# task-manager
-Module that contains functionality to get configuration for grunt tasks.
+# Multi-tenant Minifier
+This package includes tenant specific overrides for a core set of javascript and HTML when performing minification.
