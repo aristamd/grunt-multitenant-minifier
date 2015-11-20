@@ -1,5 +1,5 @@
 /*
- * task-manager
+ * multitenant-minifier
  *
  * Copyright (c) 2015 AristaMD
  * Licensed under the MIT license.
