@@ -316,6 +316,13 @@ module.exports = function(config, grunt) {
             {
                 src: [config.src + 'listener.html'],
                 dest: config.dest + 'listener.html'
+            },
+            {
+                expand: true,
+                cwd: config.src + '/vendor/css',
+                src: ['*.png','*.gif'],
+                dest: config.dest + 'css/',
+                flatten: true
             }
         ];
 
