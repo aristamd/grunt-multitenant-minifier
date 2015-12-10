@@ -192,7 +192,10 @@ module.exports = function(config, grunt) {
                         srcPath + 'vendor/js/highcharts.js',
                         srcPath + 'vendor/js/highcharts-ng.js',
                         srcPath + 'vendor/js/jstz.js',
-                        srcPath + 'vendor/js/angular-file-upload.js'
+                        srcPath + 'vendor/js/angular-file-upload.js',
+                        srcPath + 'vendor/js/source-map.js',
+                        srcPath + 'vendor/js/ua-parser.js',
+                        srcPath + 'vendor/js/ng-ua-parser.js'
                     ]
                 }
             ];
