@@ -1,7 +1,7 @@
 {
   "name": "multitenant-minifier",
   "description": "This package includes tenant specific overrides for a core set of javascript and HTML when performing minification.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": {
     "name": "Luis Diego Cordero H",
     "email": "ldiegoch@gmail.com"

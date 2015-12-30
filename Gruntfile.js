@@ -290,6 +290,13 @@ module.exports = function (config, grunt) {
                 src: ['*.png', '*.gif'],
                 dest: config.dest + 'css/',
                 flatten: true
+            },
+            {
+                expand: true,
+                cwd: config.src + '/i18n',
+                src: ['*.json'],
+                dest: config.dest + 'i18n/',
+                flatten: true
             }
         ];
 
@@ -312,6 +319,13 @@ module.exports = function (config, grunt) {
                 cwd: config.src + config.tenants + '/' + tenant + '/',
                 src: ['**/*.jpg', '**/*.png', '**/*.gif'],
                 dest: config.dest + config.tenants + '/' + tenant + '/img/',
+                flatten: true
+            });
+            files.push({
+                expand: true,
+                cwd: config.src + config.tenants + '/' + tenant + '/i18n',
+                src: ['*.json'],
+                dest: config.dest + config.tenants + '/' + tenant + '/i18n/',
                 flatten: true
             });
         }
@@ -439,6 +453,44 @@ module.exports = function (config, grunt) {
         return files;
     };
 
+    /**
+     * Locates all the localication json files for the 'app' and tenant namespaces
+     *
+     * @return {Object} object with the structure { dest: [src,src] }
+     */
+    this.getLanguageFiles = function(){
+        var files = {};
+        var src = [];
+        var tenants = self.tenants;
+
+        // get a list of known modules and create a regex pattern
+        var modules = '+(' + config.modules.join('|') + ')';
+
+        for (var i in config.languages) {
+            var lang = config.languages[i];
+
+            // Get all language files for the top level 'app' namespace
+            var baseLanguageFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+lang+'.json');
+
+            // Add the base namespace files to the list of all files
+            files[config.src + 'i18n/'+lang+'.json'] = baseLanguageFiles;
+
+            // Loop through each tenant adding an entry for each
+            for (var i in tenants) {
+                var tenantLanguageSources = config.src + config.tenants + '/' + tenants[i] + '/'+modules+'/**/i18n/'+lang+'.json';
+                var tenantLanguageFiles = glob.sync(tenantLanguageSources);
+
+                // A simple concat of the arrays base + tenant is sufficient
+                // since the merge-json library takes care of overwriting
+                // identically named attributes
+                var tenantDest = config.src + config.tenants + '/' + tenants[i] + '/i18n/'+lang+'.json';
+                files[tenantDest] = baseLanguageFiles.concat(tenantLanguageFiles);
+            }
+        }
+
+        return files;
+    }
+
     this.getConfig = function () {
         config.concatFiles = self.getConcatFiles(config.modules, config.elements, config.src, config.dest);
         config.uglifyFiles = self.getUglifyFiles();
@@ -448,6 +500,7 @@ module.exports = function (config, grunt) {
         config.jadeFiles = self.getJadeFiles();
         config.ngTemplateFiles = self.getNgTemplateFiles();
         config.replaceFiles = self.getReplaceFiles();
+        config.languageFiles = self.getLanguageFiles();
         return config;
     }
 
