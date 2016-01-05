@@ -467,24 +467,35 @@ module.exports = function (config, grunt) {
         var modules = '+(' + config.modules.join('|') + ')';
 
         for (var i in config.languages) {
+
             var lang = config.languages[i];
 
             // Get all language files for the top level 'app' namespace
-            var baseLanguageFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+lang+'.json');
+            var appLanguageFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+lang+'.json');
 
-            // Add the base namespace files to the list of all files
-            files[config.src + 'i18n/'+lang+'.json'] = baseLanguageFiles;
+            for (var j in config.locales) {
+                var locale = config.languages[i] + '_' + config.locales[j];
 
-            // Loop through each tenant adding an entry for each
-            for (var i in tenants) {
-                var tenantLanguageSources = config.src + config.tenants + '/' + tenants[i] + '/'+modules+'/**/i18n/'+lang+'.json';
-                var tenantLanguageFiles = glob.sync(tenantLanguageSources);
+                // Get all language files for the top level 'app' namespace
+                var appLocaleFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+locale+'.json');
 
-                // A simple concat of the arrays base + tenant is sufficient
-                // since the merge-json library takes care of overwriting
-                // identically named attributes
-                var tenantDest = config.src + config.tenants + '/' + tenants[i] + '/i18n/'+lang+'.json';
-                files[tenantDest] = baseLanguageFiles.concat(tenantLanguageFiles);
+                // Add the base namespace files to the list of all files
+                files[config.src + 'i18n/'+locale+'.json'] = appLanguageFiles.concat(appLocaleFiles);
+
+                // Loop through each tenant adding an entry for each
+                for (var i in tenants) {
+                    var tenantLanguageSources = config.src + config.tenants + '/' + tenants[i] + '/'+modules+'/**/i18n/'+lang+'.json';
+                    var tenantLanguageFiles = glob.sync(tenantLanguageSources);
+
+                    var tenantLocaleSources = config.src + config.tenants + '/' + tenants[i] + '/'+modules+'/**/i18n/'+locale+'.json';
+                    var tenantLocaleFiles = glob.sync(tenantLocaleSources);
+
+                    // A simple concat of the arrays base + tenant is sufficient
+                    // since the merge-json library takes care of overwriting
+                    // identically named attributes
+                    var tenantDest = config.src + config.tenants + '/' + tenants[i] + '/i18n/'+locale+'.json';
+                    files[tenantDest] = appLanguageFiles.concat(appLocaleFiles.concat(tenantLanguageFiles.concat(tenantLocaleFiles)));
+                }
             }
         }
 
