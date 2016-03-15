@@ -474,7 +474,7 @@ module.exports = function (config, grunt) {
             var appLanguageFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+lang+'.json');
 
             for (var j in config.locales) {
-                var locale = config.languages[i] + '_' + config.locales[j];
+                var locale = lang + '_' + config.locales[j];
 
                 // Get all language files for the top level 'app' namespace
                 var appLocaleFiles = glob.sync( config.src + '/'+modules+'/**/i18n/'+locale+'.json');
