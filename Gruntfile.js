@@ -285,6 +285,12 @@ module.exports = function (config, grunt) {
                 dest: config.dest + 'listener.html'
             },
             {
+		expand: true,
+		cwd: config.src + '/acunetix/',
+                src: ['*.txt'],
+                dest: config.dest
+            },
+            {
                 expand: true,
                 cwd: config.src + '/vendor/css',
                 src: ['*.png', '*.gif'],
