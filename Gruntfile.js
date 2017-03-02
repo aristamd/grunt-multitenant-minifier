@@ -265,7 +265,7 @@ module.exports = function (config, grunt) {
             {
                 expand: true,
                 cwd: config.src,
-                src: ['**/*.eot', '**/*.svg', '**/*.ttf', '**/*.woff'],
+                src: ['**/*.eot', '**/*.svg', '**/*.ttf', '**/*.woff', '**/*.woff2'],
                 dest: config.dest + 'fonts/',
                 flatten: true
             },
