@@ -137,7 +137,7 @@ module.exports = function (config, grunt) {
             var deniedFiles = null;
             for (var i in elements) {
                 element = elements[i];
-                src.push(path + element + '/*.js');
+                src.push(path + element + '/**/*.js');
                 if (tenant) {
                     tenantFiles = self.getModuleFiles(module, element, config.src + config.tenants + '/' + tenant + '/');
                     deniedFiles = self.getDeniedFilesForModule(tenantFiles, srcPath, module);
