@@ -508,6 +508,18 @@ module.exports = function (config, grunt) {
         return files;
     }
 
+    this.getTemplateFiles = function (){
+        var files = [];
+        var path = config.dest + config.tenants+ '/';
+        var tenants = self.tenants;
+        for (var i in tenants) {
+            files.push( {src: path + tenants[i] + '/js/templates.js',
+                dest: path + tenants[i] + '/js/templates.js' } );
+        }
+
+        return files;
+    };
+
     this.getConfig = function () {
         config.concatFiles = self.getConcatFiles(config.modules, config.elements, config.src, config.dest);
         config.uglifyFiles = self.getUglifyFiles();
@@ -518,6 +530,7 @@ module.exports = function (config, grunt) {
         config.ngTemplateFiles = self.getNgTemplateFiles();
         config.replaceFiles = self.getReplaceFiles();
         config.languageFiles = self.getLanguageFiles();
+        config.templateFiles = self.getTemplateFiles();
         return config;
     }
 
